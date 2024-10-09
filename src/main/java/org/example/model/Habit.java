@@ -21,6 +21,13 @@ public class Habit {
         this.history = new HashMap<>();
     }
 
+    public Habit(String title, String description, Period period) {
+        this.title = title;
+        this.description = description;
+        this.period = period;
+        this.history = new HashMap<>();
+    }
+
     public Long getId() {
         return id;
     }

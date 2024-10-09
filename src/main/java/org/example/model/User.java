@@ -1,7 +1,5 @@
 package org.example.model;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class User {
@@ -10,14 +8,19 @@ public class User {
     private String name;
     private String email;
     private String password;
-    private List<Habit> habits;
+
 
     public User(Long id, String name, String email, String password) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
-        this.habits = new ArrayList<>();
+    }
+
+    public User(String name, String email, String password) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
     }
 
     public Long getId() {
@@ -52,14 +55,6 @@ public class User {
         this.password = password;
     }
 
-    public List<Habit> getHabits() {
-        return habits;
-    }
-
-    public void setHabits(List<Habit> habits) {
-        this.habits = habits;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -68,13 +63,12 @@ public class User {
         return Objects.equals(id, user.id)
                 && Objects.equals(name, user.name)
                 && Objects.equals(email, user.email)
-                && Objects.equals(password, user.password)
-                && Objects.equals(habits, user.habits);
+                && Objects.equals(password, user.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, email, password, habits);
+        return Objects.hash(id, name, email, password);
     }
 
     @Override
@@ -84,7 +78,6 @@ public class User {
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", habits=" + habits +
                 '}';
     }
 
