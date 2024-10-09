@@ -11,21 +11,19 @@ public class Habit {
     private String title;
     private String description;
     private Period period;
-    private Map<Date, Boolean> history;
+
 
     public Habit(Long id, String title, String description, Period period) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.period = period;
-        this.history = new HashMap<>();
     }
 
     public Habit(String title, String description, Period period) {
         this.title = title;
         this.description = description;
         this.period = period;
-        this.history = new HashMap<>();
     }
 
     public Long getId() {
@@ -60,14 +58,6 @@ public class Habit {
         this.period = period;
     }
 
-    public Map<Date, Boolean> getHistory() {
-        return history;
-    }
-
-    public void setHistory(Map<Date, Boolean> history) {
-        this.history = history;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -76,13 +66,13 @@ public class Habit {
         return Objects.equals(id, habit.id)
                 && Objects.equals(title, habit.title)
                 && Objects.equals(description, habit.description)
-                && period == habit.period
-                && Objects.equals(history, habit.history);
+                && period == habit.period;
+
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, description, period, history);
+        return Objects.hash(id, title, description, period);
     }
 
     @Override
@@ -92,7 +82,6 @@ public class Habit {
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", period=" + period +
-                ", history=" + history +
                 '}';
     }
 }
