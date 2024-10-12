@@ -62,7 +62,7 @@ public class HabitHistoryServiceImpl implements HabitHistoryService {
     public int getCurrentStreak(Long habitId) {
         Map<LocalDate, Boolean> history = habitHistoryMemoryRepository.getHabitHistory(habitId);
         int result = 0;
-        for (int i = 1; i < history.size(); i++) {
+        for (int i = 0; i < history.size(); i++) {
             Boolean mark = history.get(LocalDate.now().minusDays(i));
             if (mark == null || !mark) {
                 break;
@@ -78,7 +78,7 @@ public class HabitHistoryServiceImpl implements HabitHistoryService {
         Map<LocalDate, Boolean> history = habitHistoryMemoryRepository.getHabitHistory(habitId);
         int result = 0;
         int temp = 0;
-        for (int i = 1; i < history.size(); i++) {
+        for (int i = 0; i < history.size(); i++) {
             Boolean mark = history.get(LocalDate.now().minusDays(i));
             if (mark == null) {
                 break;

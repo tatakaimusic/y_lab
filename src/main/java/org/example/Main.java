@@ -28,20 +28,38 @@ public class Main {
         System.out.println(user);
 
         Habit habit = new Habit("title", "description", HabitPeriod.DAILY);
-        habit = habitService.create(user.getId(), habit, LocalDate.of(2024, Month.OCTOBER, 9));
+        habit = habitService.create(user.getId(), habit, LocalDate.of(2024, Month.OCTOBER, 7));
         System.out.println(habit);
+        Habit habit1 = new Habit("title2", "description", HabitPeriod.WEEKLY);
+        habit1 = habitService.create(user.getId(), habit1, LocalDate.of(2024, Month.OCTOBER, 8));
+        System.out.println(habit1);
 
-        habitHistoryService.create(habit.getId(), LocalDate.of(2024, Month.OCTOBER, 10));
-        habitHistoryService.create(habit.getId(), LocalDate.of(2024, Month.OCTOBER, 11));
-        habitHistoryService.create(habit.getId(), LocalDate.of(2024, Month.OCTOBER, 12));
+        Habit habit2 = new Habit("title3", "description", HabitPeriod.DAILY);
+        habit2 = habitService.create(user.getId(), habit2, LocalDate.of(2024, Month.OCTOBER, 9));
+        System.out.println(habit2);
 
-        habitHistoryService.mark(habit.getId(), user.getId(), LocalDate.of(2024, Month.OCTOBER, 9));
-        habitHistoryService.mark(habit.getId(), user.getId(), LocalDate.of(2024, Month.OCTOBER, 11));
-        habitHistoryService.mark(habit.getId(), user.getId(), LocalDate.of(2024, Month.OCTOBER, 12));
+//        System.out.println(habitService.getAllHabitsByUserIdOrderedByDate(user.getId(), Order.ASC));
+//        System.out.println(habitService.getAllHabitsByUserIdOrderedByDate(user.getId(), Order.DESC));
 
-        System.out.println(habitHistoryService.getHabitHistory(habit.getId()));
+        System.out.println(habitService.getAllHabitsByUserIdAndPeriod(user.getId(), HabitPeriod.DAILY));
+        System.out.println(habitService.getAllHabitsByUserIdAndPeriod(user.getId(), HabitPeriod.WEEKLY));
 
-        System.out.println(habitHistoryService.getCurrentStreak(habit.getId()));
-        System.out.println(habitHistoryService.getMaxStreak(habit.getId()));
+//        habitHistoryService.create(habit.getId(), LocalDate.of(2024, Month.OCTOBER, 8));
+//        habitHistoryService.create(habit.getId(), LocalDate.of(2024, Month.OCTOBER, 9));
+//        habitHistoryService.create(habit.getId(), LocalDate.of(2024, Month.OCTOBER, 10));
+//        habitHistoryService.create(habit.getId(), LocalDate.of(2024, Month.OCTOBER, 11));
+//        habitHistoryService.create(habit.getId(), LocalDate.of(2024, Month.OCTOBER, 12));
+//
+//        habitHistoryService.mark(habit.getId(), user.getId(), LocalDate.of(2024, Month.OCTOBER, 7));
+//        habitHistoryService.mark(habit.getId(), user.getId(), LocalDate.of(2024, Month.OCTOBER, 8));
+//        habitHistoryService.mark(habit.getId(), user.getId(), LocalDate.of(2024, Month.OCTOBER, 9));
+//        habitHistoryService.mark(habit.getId(), user.getId(), LocalDate.of(2024, Month.OCTOBER, 12));
+//
+//
+//        System.out.println(habitHistoryService.getHabitHistory(habit.getId()));
+//
+//        System.out.println(habitHistoryService.getCurrentStreak(habit.getId()));
+//        System.out.println(habitHistoryService.getMaxStreak(habit.getId()));
+
     }
 }

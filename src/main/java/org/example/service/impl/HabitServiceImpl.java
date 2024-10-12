@@ -1,11 +1,15 @@
 package org.example.service.impl;
 
 import org.example.model.Habit;
+import org.example.model.HabitPeriod;
+import org.example.model.Order;
 import org.example.repository.impl.HabitHistoryMemoryRepositoryImpl;
 import org.example.repository.impl.HabitMemoryRepositoryImpl;
 import org.example.service.HabitService;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -44,6 +48,33 @@ public class HabitServiceImpl implements HabitService {
     @Override
     public List<Habit> getAllHabitsByUserId(Long userId) {
         return habitMemoryRepository.getAllHabitsByUserId(userId);
+    }
+
+    @Override
+    public List<Habit> getAllHabitsByUserIdOrderedByDate(Long userId, Order order) {
+        List<Habit> habits = habitMemoryRepository.getAllHabitsByUserId(userId);
+        List<Habit> sortedHabits = new ArrayList<>(habits);
+        switch (order) {
+            case ASC:
+                sortedHabits.sort(Comparator.comparing(Habit::getCreateDate));
+                break;
+            case DESC:
+                sortedHabits.sort(Comparator.comparing(Habit::getCreateDate).reversed());
+                break;
+        }
+        return sortedHabits;
+    }
+
+    @Override
+    public List<Habit> getAllHabitsByUserIdAndPeriod(Long userId, HabitPeriod period) {
+        List<Habit> habits = habitMemoryRepository.getAllHabitsByUserId(userId);
+        List<Habit> result = new ArrayList<>();
+        for (Habit habit : habits) {
+            if (habit.getPeriod().equals(period)) {
+                result.add(habit);
+            }
+        }
+        return result;
     }
 
     @Override
