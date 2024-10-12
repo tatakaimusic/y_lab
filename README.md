@@ -1,5 +1,5 @@
-Чтобы запустить приложение, зайдите в паппку in -> Console -> App.
+Чтобы запустить приложение, зайдите в папку in -> Console -> App.
 
-Данные для входа за тестового пользователя: 
-email: user@mail.ru
-password: password
+Данные для входа за тестового пользователя:   
+email: user@mail.ru  
+password: password  
