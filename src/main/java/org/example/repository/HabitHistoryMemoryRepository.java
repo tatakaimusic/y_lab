@@ -15,4 +15,6 @@ public interface HabitHistoryMemoryRepository {
 
     Boolean getLocalDateMark(Long habitId, LocalDate date);
 
+    void clear();
+
 }

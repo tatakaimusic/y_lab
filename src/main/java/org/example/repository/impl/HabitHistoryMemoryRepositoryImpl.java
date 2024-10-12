@@ -1,7 +1,6 @@
 package org.example.repository.impl;
 
 
-import org.example.model.Period;
 import org.example.repository.HabitHistoryMemoryRepository;
 
 import java.time.LocalDate;
@@ -41,6 +40,11 @@ public class HabitHistoryMemoryRepositoryImpl implements HabitHistoryMemoryRepos
     @Override
     public Boolean getLocalDateMark(Long habitId, LocalDate date) {
         return habitHistory.get(habitId).get(date);
+    }
+
+    @Override
+    public void clear(){
+        habitHistory.clear();
     }
 
 }

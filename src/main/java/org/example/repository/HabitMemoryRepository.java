@@ -22,4 +22,6 @@ public interface HabitMemoryRepository {
 
     void delete(Long userId, String habitTitle);
 
+    void clear();
+
 }

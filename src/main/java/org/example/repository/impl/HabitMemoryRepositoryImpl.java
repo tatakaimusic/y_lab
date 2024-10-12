@@ -63,7 +63,8 @@ public class HabitMemoryRepositoryImpl implements HabitMemoryRepository {
     @Override
     public void update(Long userId, String oldHabitTitle, Habit habit) {
         if (habits.containsKey(userId)) {
-            habits.get(userId).put(oldHabitTitle, habit);
+            habits.get(userId).remove(oldHabitTitle);
+            habits.get(userId).put(habit.getTitle(), habit);
         }
     }
 
@@ -75,6 +76,11 @@ public class HabitMemoryRepositoryImpl implements HabitMemoryRepository {
                 habits.remove(userId);
             }
         }
+    }
+
+    @Override
+    public void clear() {
+        habits.clear();
     }
 
 }

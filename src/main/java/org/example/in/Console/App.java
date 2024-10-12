@@ -1,7 +1,6 @@
-package org.example;
+package org.example.in.Console;
 
 
-import org.example.in.Console.ConsoleService;
 import org.example.model.User;
 import org.example.repository.impl.HabitHistoryMemoryRepositoryImpl;
 import org.example.repository.impl.HabitMemoryRepositoryImpl;
@@ -16,7 +15,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 
-public class Main {
+public class App {
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
