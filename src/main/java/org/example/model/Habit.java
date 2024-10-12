@@ -9,13 +9,13 @@ public class Habit {
     private Long id;
     private String title;
     private String description;
-    private Period period;
+    private HabitPeriod period;
     private LocalDate createDate;
     private Integer maxStreak;
     private Integer currentStreak;
 
 
-    public Habit(Long id, String title, String description, Period period) {
+    public Habit(Long id, String title, String description, HabitPeriod period) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -25,7 +25,7 @@ public class Habit {
         this.currentStreak = 0;
     }
 
-    public Habit(String title, String description, Period period) {
+    public Habit(String title, String description, HabitPeriod period) {
         this.title = title;
         this.description = description;
         this.period = period;
@@ -34,7 +34,7 @@ public class Habit {
         this.currentStreak = 0;
     }
 
-    public Habit(String title, String description, Period period, Integer maxStreak, Integer currentStreak) {
+    public Habit(String title, String description, HabitPeriod period, Integer maxStreak, Integer currentStreak) {
         this.title = title;
         this.description = description;
         this.period = period;
@@ -67,11 +67,11 @@ public class Habit {
         this.description = description;
     }
 
-    public Period getPeriod() {
+    public HabitPeriod getPeriod() {
         return period;
     }
 
-    public void setPeriod(Period period) {
+    public void setPeriod(HabitPeriod period) {
         this.period = period;
     }
 

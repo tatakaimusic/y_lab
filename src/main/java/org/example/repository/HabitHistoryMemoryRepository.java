@@ -5,9 +5,11 @@ import java.util.Map;
 
 public interface HabitHistoryMemoryRepository {
 
-    void mark(Long habitId);
+    void mark(Long habitId, LocalDate date);
 
-    void create(Long habitId);
+    void create(Long habitId, LocalDate date);
+
+    void delete(Long habitId);
 
     Map<LocalDate, Boolean> getHabitHistory(Long habitId);
 

@@ -2,11 +2,14 @@ package org.example.service;
 
 import org.example.model.Habit;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface HabitService {
 
     Habit create(Long userId, Habit habit);
+
+    Habit create(Long userId, Habit habit, LocalDate date);
 
     Habit get(Long userId, Long habitId);
 

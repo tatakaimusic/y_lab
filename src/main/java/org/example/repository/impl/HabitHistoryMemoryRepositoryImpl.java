@@ -1,6 +1,7 @@
 package org.example.repository.impl;
 
 
+import org.example.model.Period;
 import org.example.repository.HabitHistoryMemoryRepository;
 
 import java.time.LocalDate;
@@ -13,18 +14,23 @@ public class HabitHistoryMemoryRepositoryImpl implements HabitHistoryMemoryRepos
     Map<Long, Map<LocalDate, Boolean>> habitHistory = new LinkedHashMap<>();
 
     @Override
-    public void mark(Long habitId) {
+    public void mark(Long habitId, LocalDate date) {
         Map<LocalDate, Boolean> dates = habitHistory.get(habitId);
-        dates.put(LocalDate.now(), !getLocalDateMark(habitId, LocalDate.now()));
+        dates.put(date, !getLocalDateMark(habitId, LocalDate.now()));
     }
 
     @Override
-    public void create(Long habitId) {
+    public void create(Long habitId, LocalDate date) {
         if (!habitHistory.containsKey(habitId)) {
             habitHistory.put(habitId, new LinkedHashMap<>());
         }
-        habitHistory.get(habitId).put(LocalDate.now(), false);
+        habitHistory.get(habitId).put(date, false);
 
+    }
+
+    @Override
+    public void delete(Long habitId) {
+        habitHistory.remove(habitId);
     }
 
     @Override

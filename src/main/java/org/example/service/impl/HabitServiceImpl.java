@@ -5,6 +5,7 @@ import org.example.repository.impl.HabitHistoryMemoryRepositoryImpl;
 import org.example.repository.impl.HabitMemoryRepositoryImpl;
 import org.example.service.HabitService;
 
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -24,7 +25,14 @@ public class HabitServiceImpl implements HabitService {
     @Override
     public Habit create(Long userId, Habit habit) {
         habit = habitMemoryRepository.create(userId, habit);
-        habitHistoryMemoryRepository.create(habit.getId());
+        habitHistoryMemoryRepository.create(habit.getId(), LocalDate.now());
+        return habit;
+    }
+
+    @Override
+    public Habit create(Long userId, Habit habit, LocalDate date) {
+        habit = habitMemoryRepository.create(userId, habit);
+        habitHistoryMemoryRepository.create(habit.getId(), date);
         return habit;
     }
 
@@ -51,6 +59,7 @@ public class HabitServiceImpl implements HabitService {
     @Override
     public void delete(Long userId, Long habitId) {
         habitMemoryRepository.delete(userId, habitId);
+        habitHistoryMemoryRepository.delete(habitId);
     }
 
 }
