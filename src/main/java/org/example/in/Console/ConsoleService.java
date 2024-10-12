@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Сервис используется для создания консольного интерфейса приложения.
+ */
 public class ConsoleService {
 
     public void showNavigation(){
@@ -20,7 +23,7 @@ public class ConsoleService {
         System.out.println("Если вы хотите имзенить привычку, введите: Изменить привычку");
         System.out.println("Если вы хотите пометить привычку, введите: Отметить");
         System.out.println("Если вы хотите посмотреть историю привычки, введите: История");
-        System.out.println("Еесли вы хотите посмотреть статистику по привычке, введите: Статистика");
+        System.out.println("Если вы хотите посмотреть статистику по привычке, введите: Статистика");
         System.out.println("Если вы хотите удалить привычку, введите: Удалить привычку");
         System.out.println("Если вы хотите посмотреть информацию о вашем профиле, введите: Профиль");
         System.out.println("Если вы хотите поменять профиль, введите: Изменить профиль");
@@ -272,7 +275,7 @@ public class ConsoleService {
             System.out.println("MONTH - за этот месяц");
             Period periodEnum = Period.valueOf(reader.readLine());
             System.out.println(
-                    "Прцоент выполнения за данный период: "
+                    "Процент выполнения за данный период: "
                             + habitHistoryService.getPercentOfHabitForPeriod(habit.getId(), periodEnum) + " %"
             );
             System.out.println("------------------------------------------------------------------------");

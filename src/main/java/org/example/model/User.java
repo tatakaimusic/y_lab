@@ -2,6 +2,9 @@ package org.example.model;
 
 import java.util.Objects;
 
+/**
+ * Модель пользователя
+ */
 public class User {
 
     private Long id;

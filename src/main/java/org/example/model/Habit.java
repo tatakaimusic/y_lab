@@ -4,6 +4,9 @@ package org.example.model;
 import java.time.LocalDate;
 import java.util.Objects;
 
+/**
+ * Модель привычки
+ */
 public class Habit {
 
     private Long id;

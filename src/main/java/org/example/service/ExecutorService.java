@@ -10,10 +10,19 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+
 public class ExecutorService {
 
     private static final ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(5);
 
+    /**
+     * Запускает ScheduledExecutorService.
+     * Каждую полночь переебирает все привычки в хранилище и добавляет новую дату в хранилище историй каждой привычки.
+     * delay - количество милисекунд до полуночи при старте приложения.
+     *
+     * @param habitService
+     * @param habitHistoryService
+     */
     public static void execute(
             HabitServiceImpl habitService,
             HabitHistoryServiceImpl habitHistoryService
@@ -26,21 +35,10 @@ public class ExecutorService {
         executorService.scheduleAtFixedRate(() -> {
             for (Habit habit : habitService.getAllHabits()) {
                 habitHistoryService.create(habit.getId());
-//                setStreak(habit, habitHistoryService);
             }
         }, delay, dayInMillis, TimeUnit.MILLISECONDS);
     }
 
-//    private static void setStreak(Habit habit, HabitHistoryServiceImpl habitHistoryService) {
-//        boolean yesterdayMark = habitHistoryService.getLocalDateMark(
-//                habit.getId(), LocalDate.now().minusDays(1)
-//        );
-//        if (!yesterdayMark) {
-//            habit.setCurrentStreak(0);
-//        } else {
-//            habit.setCurrentStreak(habit.getCurrentStreak() + 1);
-//            habit.setMaxStreak(Math.max(habit.getCurrentStreak(), habit.getMaxStreak()));
-//        }
-//    }
+
 
 }
