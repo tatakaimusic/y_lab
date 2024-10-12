@@ -5,6 +5,7 @@ import org.example.repository.UserMemoryRepository;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class UserMemoryRepositoryImpl implements UserMemoryRepository {
 
@@ -32,8 +33,8 @@ public class UserMemoryRepositoryImpl implements UserMemoryRepository {
     }
 
     @Override
-    public User get(String email) {
-        return users.get(email);
+    public Optional<User> get(String email) {
+        return Optional.ofNullable(users.get(email));
     }
 
 }

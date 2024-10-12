@@ -28,21 +28,20 @@ public class HabitServiceImpl implements HabitService {
 
     @Override
     public Habit create(Long userId, Habit habit) {
-        habit = habitMemoryRepository.create(userId, habit);
-        habitHistoryMemoryRepository.create(habit.getId(), LocalDate.now());
-        return habit;
+        return createHabit(userId, habit, LocalDate.now());
     }
 
     @Override
     public Habit create(Long userId, Habit habit, LocalDate date) {
-        habit = habitMemoryRepository.create(userId, habit, date);
-        habitHistoryMemoryRepository.create(habit.getId(), date);
-        return habit;
+        return createHabit(userId, habit, date);
     }
 
     @Override
-    public Habit get(Long userId, Long habitId) {
-        return habitMemoryRepository.get(userId, habitId);
+    public Habit get(Long userId, String habitTitle) {
+        return habitMemoryRepository.get(userId, habitTitle)
+                .orElseThrow(
+                        () -> new IllegalArgumentException("Habit with this title doesn't exist!")
+                );
     }
 
     @Override
@@ -83,14 +82,29 @@ public class HabitServiceImpl implements HabitService {
     }
 
     @Override
-    public void update(Long userId, Long habitId, Habit habit) {
-        habitMemoryRepository.update(userId, habitId, habit);
+    public void update(Long userId, String habitTitle, Habit habit) {
+        if (!habitTitle.equals(habit.getTitle())) {
+            Habit hab = habitMemoryRepository.get(userId, habit.getTitle()).orElse(null);
+            if (hab != null) {
+                throw new IllegalArgumentException("Habit with this title already exist!");
+            }
+        }
+        habitMemoryRepository.update(userId, habitTitle, habit);
     }
 
     @Override
-    public void delete(Long userId, Long habitId) {
-        habitMemoryRepository.delete(userId, habitId);
+    public void delete(Long userId, String habitTitle, Long habitId) {
+        habitMemoryRepository.delete(userId, habitTitle);
         habitHistoryMemoryRepository.delete(habitId);
+    }
+
+    private Habit createHabit(Long userId, Habit habit, LocalDate date) {
+        if (habitMemoryRepository.get(userId, habit.getTitle()).isPresent()) {
+            throw new IllegalArgumentException("Habit with this title already exists");
+        }
+        habit = habitMemoryRepository.create(userId, habit, date);
+        habitHistoryMemoryRepository.create(habit.getId(), date);
+        return habit;
     }
 
 }

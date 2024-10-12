@@ -13,7 +13,7 @@ public interface HabitService {
 
     Habit create(Long userId, Habit habit, LocalDate date);
 
-    Habit get(Long userId, Long habitId);
+    Habit get(Long userId, String habitTitle);
 
     List<Habit> getAllHabitsByUserId(Long userId);
 
@@ -23,8 +23,8 @@ public interface HabitService {
 
     List<Habit> getAllHabits();
 
-    void update(Long userId, Long habitId, Habit habit);
+    void update(Long userId, String habitTitle, Habit habit);
 
-    void delete(Long userId, Long habitId);
+    void delete(Long userId, String habitTitle, Long habitId);
 
 }

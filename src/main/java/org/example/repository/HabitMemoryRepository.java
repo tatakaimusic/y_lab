@@ -4,6 +4,7 @@ import org.example.model.Habit;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface HabitMemoryRepository {
 
@@ -11,14 +12,14 @@ public interface HabitMemoryRepository {
 
     Habit create(Long userId, Habit habit, LocalDate createDate);
 
-    Habit get(Long userId, Long habitId);
+    Optional<Habit> get(Long userId, String habitTitle);
 
     List<Habit> getAllHabitsByUserId(Long userId);
 
     List<Habit> getAllHabits();
 
-    void update(Long userId, Long habitId, Habit habit);
+    void update(Long userId, String habitTitle, Habit habit);
 
-    void delete(Long userId, Long habitId);
+    void delete(Long userId, String habitTitle);
 
 }

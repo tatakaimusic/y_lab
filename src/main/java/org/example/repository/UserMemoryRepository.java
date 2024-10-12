@@ -2,6 +2,8 @@ package org.example.repository;
 
 import org.example.model.User;
 
+import java.util.Optional;
+
 public interface UserMemoryRepository {
 
     User create(User user);
@@ -10,6 +12,6 @@ public interface UserMemoryRepository {
 
     void delete(User user);
 
-    User get(String email);
+    Optional<User> get(String email);
 
 }

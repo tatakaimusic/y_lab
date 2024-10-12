@@ -16,7 +16,7 @@ public class UserServiceImpl implements UserService {
 
     public User create(User user) {
         Objects.requireNonNull(user, "User must not be null");
-        if (userMemoryRepository.get(user.getEmail()) != null) {
+        if (userMemoryRepository.get(user.getEmail()).isPresent()) {
             throw new IllegalArgumentException("User with this email already exists");
         }
         return userMemoryRepository.create(user);
@@ -33,11 +33,10 @@ public class UserServiceImpl implements UserService {
     }
 
     public User get(String email) {
-        User user = userMemoryRepository.get(email);
-        if (user == null) {
-            throw new IllegalArgumentException("User with this email does not exist");
-        }
-        return user;
+        return userMemoryRepository.get(email)
+                .orElseThrow(
+                        () -> new IllegalArgumentException("User with this email does not exist")
+                );
     }
 
 }

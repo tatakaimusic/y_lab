@@ -10,7 +10,7 @@ public class HabitMemoryRepositoryImpl implements HabitMemoryRepository {
 
     private static Long counter = 100L;
 
-    private final Map<Long, Map<Long, Habit>> habits = new LinkedHashMap<>();
+    private final Map<Long, Map<String, Habit>> habits = new LinkedHashMap<>();
 
     @Override
     public Habit create(Long userId, Habit habit) {
@@ -19,7 +19,7 @@ public class HabitMemoryRepositoryImpl implements HabitMemoryRepository {
         if (!habits.containsKey(userId)) {
             habits.put(userId, new HashMap<>());
         }
-        habits.get(userId).put(habit.getId(), habit);
+        habits.get(userId).put(habit.getTitle(), habit);
         return habit;
     }
 
@@ -30,13 +30,16 @@ public class HabitMemoryRepositoryImpl implements HabitMemoryRepository {
         if (!habits.containsKey(userId)) {
             habits.put(userId, new HashMap<>());
         }
-        habits.get(userId).put(habit.getId(), habit);
+        habits.get(userId).put(habit.getTitle(), habit);
         return habit;
     }
 
     @Override
-    public Habit get(Long userId, Long habitId) {
-        return habits.get(userId).get(habitId);
+    public Optional<Habit> get(Long userId, String habitTitle) {
+        if (habits.containsKey(userId)) {
+            return Optional.ofNullable(habits.get(userId).get(habitTitle));
+        }
+        return Optional.empty();
     }
 
     @Override
@@ -51,23 +54,23 @@ public class HabitMemoryRepositoryImpl implements HabitMemoryRepository {
     @Override
     public List<Habit> getAllHabits() {
         List<Habit> result = new ArrayList<>();
-        for (Map.Entry<Long, Map<Long, Habit>> entry : habits.entrySet()) {
+        for (Map.Entry<Long, Map<String, Habit>> entry : habits.entrySet()) {
             result.addAll(entry.getValue().values());
         }
         return result;
     }
 
     @Override
-    public void update(Long userId, Long habitId, Habit habit) {
+    public void update(Long userId, String oldHabitTitle, Habit habit) {
         if (habits.containsKey(userId)) {
-            habits.get(userId).put(habitId, habit);
+            habits.get(userId).put(oldHabitTitle, habit);
         }
     }
 
     @Override
-    public void delete(Long userId, Long habitId) {
+    public void delete(Long userId, String habitTitle) {
         if (habits.containsKey(userId)) {
-            habits.get(userId).remove(habitId);
+            habits.get(userId).remove(habitTitle);
             if (habits.get(userId).isEmpty()) {
                 habits.remove(userId);
             }
