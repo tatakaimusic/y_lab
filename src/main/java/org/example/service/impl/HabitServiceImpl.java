@@ -31,7 +31,7 @@ public class HabitServiceImpl implements HabitService {
 
     @Override
     public Habit create(Long userId, Habit habit, LocalDate date) {
-        habit = habitMemoryRepository.create(userId, habit);
+        habit = habitMemoryRepository.create(userId, habit, date);
         habitHistoryMemoryRepository.create(habit.getId(), date);
         return habit;
     }

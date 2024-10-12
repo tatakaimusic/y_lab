@@ -11,8 +11,6 @@ public class Habit {
     private String description;
     private HabitPeriod period;
     private LocalDate createDate;
-    private Integer maxStreak;
-    private Integer currentStreak;
 
 
     public Habit(Long id, String title, String description, HabitPeriod period) {
@@ -20,27 +18,12 @@ public class Habit {
         this.title = title;
         this.description = description;
         this.period = period;
-        this.createDate = LocalDate.now();
-        this.maxStreak = 0;
-        this.currentStreak = 0;
     }
 
     public Habit(String title, String description, HabitPeriod period) {
         this.title = title;
         this.description = description;
         this.period = period;
-        this.createDate = LocalDate.now();
-        this.maxStreak = 0;
-        this.currentStreak = 0;
-    }
-
-    public Habit(String title, String description, HabitPeriod period, Integer maxStreak, Integer currentStreak) {
-        this.title = title;
-        this.description = description;
-        this.period = period;
-        this.createDate = LocalDate.now();
-        this.maxStreak = maxStreak;
-        this.currentStreak = currentStreak;
     }
 
     public Long getId() {
@@ -83,22 +66,6 @@ public class Habit {
         this.createDate = createDate;
     }
 
-    public Integer getMaxStreak() {
-        return maxStreak;
-    }
-
-    public void setMaxStreak(Integer maxStreak) {
-        this.maxStreak = maxStreak;
-    }
-
-    public Integer getCurrentStreak() {
-        return currentStreak;
-    }
-
-    public void setCurrentStreak(Integer currentStreak) {
-        this.currentStreak = currentStreak;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -108,14 +75,12 @@ public class Habit {
                 && Objects.equals(title, habit.title)
                 && Objects.equals(description, habit.description)
                 && period == habit.period
-                && Objects.equals(createDate, habit.createDate)
-                && Objects.equals(maxStreak, habit.maxStreak)
-                && Objects.equals(currentStreak, habit.currentStreak);
+                && Objects.equals(createDate, habit.createDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, description, period, createDate, maxStreak, currentStreak);
+        return Objects.hash(id, title, description, period, createDate);
     }
 
     @Override
@@ -126,8 +91,6 @@ public class Habit {
                 ", description='" + description + '\'' +
                 ", period=" + period +
                 ", createDate=" + createDate +
-                ", maxStreak=" + maxStreak +
-                ", currentStreak=" + currentStreak +
                 '}';
     }
 

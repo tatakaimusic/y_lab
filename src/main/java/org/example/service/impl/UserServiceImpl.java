@@ -16,7 +16,7 @@ public class UserServiceImpl implements UserService {
 
     public User create(User user) {
         Objects.requireNonNull(user, "User must not be null");
-        if (get(user.getEmail()) != null) {
+        if (userMemoryRepository.get(user.getEmail()) != null) {
             throw new IllegalArgumentException("User with this email already exists");
         }
         return userMemoryRepository.create(user);

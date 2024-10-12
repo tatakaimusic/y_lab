@@ -4,7 +4,6 @@ import org.example.model.Habit;
 import org.example.service.impl.HabitHistoryServiceImpl;
 import org.example.service.impl.HabitServiceImpl;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.concurrent.ScheduledExecutorService;
@@ -27,21 +26,21 @@ public class ExecutorService {
         executorService.scheduleAtFixedRate(() -> {
             for (Habit habit : habitService.getAllHabits()) {
                 habitHistoryService.create(habit.getId());
-                setStreak(habit, habitHistoryService);
+//                setStreak(habit, habitHistoryService);
             }
         }, delay, dayInMillis, TimeUnit.MILLISECONDS);
     }
 
-    private static void setStreak(Habit habit, HabitHistoryServiceImpl habitHistoryService) {
-        boolean yesterdayMark = habitHistoryService.getLocalDateMark(
-                habit.getId(), LocalDate.now().minusDays(1)
-        );
-        if (!yesterdayMark) {
-            habit.setCurrentStreak(0);
-        } else {
-            habit.setCurrentStreak(habit.getCurrentStreak() + 1);
-            habit.setMaxStreak(Math.max(habit.getCurrentStreak(), habit.getMaxStreak()));
-        }
-    }
+//    private static void setStreak(Habit habit, HabitHistoryServiceImpl habitHistoryService) {
+//        boolean yesterdayMark = habitHistoryService.getLocalDateMark(
+//                habit.getId(), LocalDate.now().minusDays(1)
+//        );
+//        if (!yesterdayMark) {
+//            habit.setCurrentStreak(0);
+//        } else {
+//            habit.setCurrentStreak(habit.getCurrentStreak() + 1);
+//            habit.setMaxStreak(Math.max(habit.getCurrentStreak(), habit.getMaxStreak()));
+//        }
+//    }
 
 }

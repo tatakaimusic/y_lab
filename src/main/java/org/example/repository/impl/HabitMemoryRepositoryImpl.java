@@ -3,6 +3,7 @@ package org.example.repository.impl;
 import org.example.model.Habit;
 import org.example.repository.HabitMemoryRepository;
 
+import java.time.LocalDate;
 import java.util.*;
 
 public class HabitMemoryRepositoryImpl implements HabitMemoryRepository {
@@ -14,6 +15,18 @@ public class HabitMemoryRepositoryImpl implements HabitMemoryRepository {
     @Override
     public Habit create(Long userId, Habit habit) {
         habit.setId(counter++);
+        habit.setCreateDate(LocalDate.now());
+        if (!habits.containsKey(userId)) {
+            habits.put(userId, new HashMap<>());
+        }
+        habits.get(userId).put(habit.getId(), habit);
+        return habit;
+    }
+
+    @Override
+    public Habit create(Long userId, Habit habit, LocalDate createDate) {
+        habit.setId(counter++);
+        habit.setCreateDate(createDate);
         if (!habits.containsKey(userId)) {
             habits.put(userId, new HashMap<>());
         }

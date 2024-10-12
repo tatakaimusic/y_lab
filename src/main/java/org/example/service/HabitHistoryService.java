@@ -1,5 +1,7 @@
 package org.example.service;
 
+import org.example.model.Period;
+
 import java.time.LocalDate;
 import java.util.Map;
 
@@ -18,5 +20,11 @@ public interface HabitHistoryService {
     Map<LocalDate, Boolean> getHabitHistory(Long habitId);
 
     Boolean getLocalDateMark(Long habitId, LocalDate date);
+
+    int getCurrentStreak(Long habitId);
+
+    int getMaxStreak(Long habitId);
+
+    Float getPercentOfHabitForPeriod(Long habitId, Period period);
 
 }

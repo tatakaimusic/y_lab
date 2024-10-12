@@ -58,6 +58,42 @@ public class HabitHistoryServiceImpl implements HabitHistoryService {
         return habitHistoryMemoryRepository.getLocalDateMark(habitId, date);
     }
 
+    @Override
+    public int getCurrentStreak(Long habitId) {
+        Map<LocalDate, Boolean> history = habitHistoryMemoryRepository.getHabitHistory(habitId);
+        int result = 0;
+        for (int i = 1; i < history.size(); i++) {
+            Boolean mark = history.get(LocalDate.now().minusDays(i));
+            if (mark == null || !mark) {
+                break;
+            } else {
+                result++;
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public int getMaxStreak(Long habitId) {
+        Map<LocalDate, Boolean> history = habitHistoryMemoryRepository.getHabitHistory(habitId);
+        int result = 0;
+        int temp = 0;
+        for (int i = 1; i < history.size(); i++) {
+            Boolean mark = history.get(LocalDate.now().minusDays(i));
+            if (mark == null) {
+                break;
+            }
+            if (mark) {
+                temp++;
+            } else {
+                temp = 0;
+            }
+            result = Math.max(temp, result);
+        }
+        return result;
+    }
+
+    @Override
     public Float getPercentOfHabitForPeriod(Long habitId, Period period) {
         Float result = 0.0f;
         switch (period) {
