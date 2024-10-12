@@ -1,10 +1,10 @@
-package org.example.repository;
+package org.example.service;
 
 import org.example.model.Habit;
 
 import java.util.List;
 
-public interface HabitMemoryRepository {
+public interface HabitService {
 
     Habit create(Long userId, Habit habit);
 

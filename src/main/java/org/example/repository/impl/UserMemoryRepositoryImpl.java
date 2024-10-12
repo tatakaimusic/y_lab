@@ -5,7 +5,6 @@ import org.example.repository.UserMemoryRepository;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class UserMemoryRepositoryImpl implements UserMemoryRepository {
 
@@ -15,7 +14,6 @@ public class UserMemoryRepositoryImpl implements UserMemoryRepository {
 
     @Override
     public User create(User user) {
-        Objects.requireNonNull(user, "User must not be null");
         user.setId(counter++);
         users.put(user.getEmail(), user);
         return user;

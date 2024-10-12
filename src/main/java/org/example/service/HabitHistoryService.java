@@ -1,11 +1,11 @@
-package org.example.repository;
+package org.example.service;
 
 import java.time.LocalDate;
 import java.util.Map;
 
-public interface HabitHistoryMemoryRepository {
+public interface HabitHistoryService {
 
-    void mark(Long habitId);
+    void mark(Long habitId, Long userId);
 
     void create(Long habitId);
 
