@@ -28,12 +28,17 @@ public class HabitServiceImpl implements HabitService {
 
     @Override
     public Habit create(Long userId, Habit habit) {
-        return createHabit(userId, habit, LocalDate.now());
+        return create(userId, habit, LocalDate.now());
     }
 
     @Override
     public Habit create(Long userId, Habit habit, LocalDate date) {
-        return createHabit(userId, habit, date);
+        if (habitMemoryRepository.get(userId, habit.getTitle()).isPresent()) {
+            throw new IllegalArgumentException("Habit with this title already exists");
+        }
+        habit = habitMemoryRepository.create(userId, habit, date);
+        habitHistoryMemoryRepository.create(habit.getId(), date);
+        return habit;
     }
 
     @Override
@@ -96,15 +101,6 @@ public class HabitServiceImpl implements HabitService {
     public void delete(Long userId, String habitTitle, Long habitId) {
         habitMemoryRepository.delete(userId, habitTitle);
         habitHistoryMemoryRepository.delete(habitId);
-    }
-
-    private Habit createHabit(Long userId, Habit habit, LocalDate date) {
-        if (habitMemoryRepository.get(userId, habit.getTitle()).isPresent()) {
-            throw new IllegalArgumentException("Habit with this title already exists");
-        }
-        habit = habitMemoryRepository.create(userId, habit, date);
-        habitHistoryMemoryRepository.create(habit.getId(), date);
-        return habit;
     }
 
 }

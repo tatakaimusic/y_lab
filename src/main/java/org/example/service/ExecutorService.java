@@ -13,6 +13,9 @@ import java.util.concurrent.TimeUnit;
 
 public class ExecutorService {
 
+    /**
+     * Создание экземпляра ScheduledExecutorService с количством потоков, равным 5.
+     */
     private static final ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(5);
 
     /**
@@ -38,7 +41,5 @@ public class ExecutorService {
             }
         }, delay, dayInMillis, TimeUnit.MILLISECONDS);
     }
-
-
 
 }

@@ -1,9 +1,10 @@
-package org.example.in.Console;
+package org.example.in.console;
 
 import org.example.model.*;
 import org.example.service.impl.HabitHistoryServiceImpl;
 import org.example.service.impl.HabitServiceImpl;
 import org.example.service.impl.UserServiceImpl;
+import org.example.util.Constant;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,21 +18,20 @@ import java.util.Objects;
  */
 public class ConsoleService {
 
-    public void showNavigation(){
-        System.out.println("Если вы хотите добавить привычку, введите: Создать привычку");
-        System.out.println("Если вы хотите посмотреть список ваших привычек, введите: Привычки");
-        System.out.println("Если вы хотите имзенить привычку, введите: Изменить привычку");
-        System.out.println("Если вы хотите пометить привычку, введите: Отметить");
-        System.out.println("Если вы хотите посмотреть историю привычки, введите: История");
-        System.out.println("Если вы хотите посмотреть статистику по привычке, введите: Статистика");
-        System.out.println("Если вы хотите удалить привычку, введите: Удалить привычку");
-        System.out.println("Если вы хотите посмотреть информацию о вашем профиле, введите: Профиль");
-        System.out.println("Если вы хотите поменять профиль, введите: Изменить профиль");
-        System.out.println("Если вы хотите поменять пароль, введите: Поменять пароль");
-        System.out.println("Если вы хотите удалить свой аккаунт, введите: Удалить аккаунт");
-        System.out.println("Если вы хотитее выйти из аккаунта, введите: Выход");
+    /**
+     * Показывает навигацию для пользователя.
+     */
+    public void showNavigation() {
+        System.out.println(Constant.NAVIGATION);
     }
 
+    /**
+     * Напполняет хранилища привычек, истории привычек и пользователей данными.
+     * @param habitService
+     * @param historyService
+     * @param userService
+     * @throws IOException
+     */
     public void populate(
             HabitServiceImpl habitService,
             HabitHistoryServiceImpl historyService,
@@ -43,7 +43,7 @@ public class ConsoleService {
         Habit habit = new Habit("title", "description", HabitPeriod.DAILY);
         habit = habitService.create(user.getId(), habit, LocalDate.now().minusDays(10));
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 11; i++) {
             historyService.create(habit.getId(), LocalDate.now().minusDays(i));
         }
 
@@ -62,6 +62,14 @@ public class ConsoleService {
 
     }
 
+    /**
+     * Регистрация пользователя. Пользователь должен ввести имя, почту и пароль.
+     * Вернет -1 и выведет на экран предупреждение, если пользователей с такой почтой уже существует.
+     * @param reader
+     * @param userService
+     * @return
+     * @throws IOException
+     */
     public int registration(BufferedReader reader, UserServiceImpl userService) throws IOException {
         System.out.println("------------------------------------------------------------------------");
         System.out.println("Введите имя пользователя: ");
@@ -82,6 +90,14 @@ public class ConsoleService {
         return 1;
     }
 
+    /**
+     * Ауентефикация пользователя по почте и паролю.
+     * Выведет предупреждение, если пароль или почта не совпадают.
+     * @param reader
+     * @param userService
+     * @return
+     * @throws IOException
+     */
     public User authentication(BufferedReader reader, UserServiceImpl userService) throws IOException {
         System.out.println("------------------------------------------------------------------------");
         System.out.println("Введите почту: ");
@@ -106,39 +122,45 @@ public class ConsoleService {
         return user;
     }
 
+    /**
+     * Выведет список привычек пользователя по его id.
+     * @param reader
+     * @param habitService
+     * @param userId
+     * @throws IOException
+     */
     public void showHabitsByUserId(BufferedReader reader, HabitServiceImpl habitService, Long userId) throws IOException {
         System.out.println("------------------------------------------------------------------------");
         List<Habit> habits;
-        System.out.println("Если вы хотите посмотреть в порядке убывания по дате, введите: По убыванию");
-        System.out.println("Если вы хотите посмотреть в порядке возрастания по дате, введите: По возрастанию");
-        System.out.println("Если вы хотите посмотреть с ежедневной периодичностью, введите: Ежедневно");
-        System.out.println("Если вы хотите посмотреть с еженедельной периодичностью, введите: Еженедельно");
-        System.out.println();
-        System.out.println("Если хотите вернуться, введите: На главную");
+        System.out.println(Constant.HABIT_LIST_NAVIGATION);
         String action = reader.readLine();
         switch (action) {
-            case "По убыванию":
+            case "1" -> {
                 habits = habitService.getAllHabitsByUserIdOrderedByDate(userId, Order.DESC);
                 showHabits(habits);
-                break;
-            case "По возрастанию":
+            }
+
+            case "2" -> {
                 habits = habitService.getAllHabitsByUserIdOrderedByDate(userId, Order.ASC);
                 showHabits(habits);
-                break;
-            case "Ежедневно":
+            }
+            case "3" -> {
                 habits = habitService.getAllHabitsByUserIdAndPeriod(userId, HabitPeriod.DAILY);
                 showHabits(habits);
-                break;
-            case "Еженедельно":
+            }
+            case "4" -> {
                 habits = habitService.getAllHabitsByUserIdAndPeriod(userId, HabitPeriod.WEEKLY);
                 showHabits(habits);
-                break;
-            case "На главную":
-                break;
+            }
+            case "5" -> System.out.println();
         }
         System.out.println("------------------------------------------------------------------------");
     }
 
+    /**
+     * Вывод привычек в консоль.
+     * @param habits
+     */
     private void showHabits(List<Habit> habits) {
         System.out.println("Ваши привычки: ");
         for (Habit habit : habits) {
@@ -147,6 +169,14 @@ public class ConsoleService {
         }
     }
 
+    /**
+     * Создание новой привычки по userId.
+     * Выведет предупреждение, если привычка с таким названием уже существует.
+     * @param reader
+     * @param habitService
+     * @param userId
+     * @throws IOException
+     */
     public void createHabit(BufferedReader reader, HabitServiceImpl habitService, Long userId) throws IOException {
         System.out.println("------------------------------------------------------------------------");
         System.out.println("Введите название привычки: ");
@@ -167,6 +197,14 @@ public class ConsoleService {
         System.out.println("------------------------------------------------------------------------");
     }
 
+    /**
+     * Выводит историю привычки.
+     * @param reader
+     * @param habitHistoryService
+     * @param habitService
+     * @param userId
+     * @throws IOException
+     */
     public void showHistoryOfHabit(
             BufferedReader reader,
             HabitHistoryServiceImpl habitHistoryService,
@@ -194,6 +232,10 @@ public class ConsoleService {
 
     }
 
+    /**
+     * Выводит данные ауентефецированногго пользователя.
+     * @param user
+     */
     public void showProfile(User user) {
         System.out.println("------------------------------------------------------------------------");
         System.out.println("Ваш профиль: ");
@@ -204,6 +246,14 @@ public class ConsoleService {
         System.out.println("------------------------------------------------------------------------");
     }
 
+    /**
+     * Просит пользователя ввести название првиычки, которую нужно изменить. А также новые данные по привычке.
+     * Изменяет привычку.
+     * @param reader
+     * @param authenticatedUser
+     * @param habitService
+     * @throws IOException
+     */
     public void changeHabit(BufferedReader reader, User authenticatedUser, HabitServiceImpl habitService) throws IOException {
         System.out.println("------------------------------------------------------------------------");
 
@@ -235,6 +285,16 @@ public class ConsoleService {
 
     }
 
+    /**
+     * Просит ввести название привычки, которую нужно отметить.
+     * Отмечает привычку на противоположное значение. Если првиычка выполнена - ее статус меняется на 'невыполнена'.
+     * И наооброт.
+     * @param user
+     * @param reader
+     * @param habitService
+     * @param habitHistoryService
+     * @throws IOException
+     */
     public void markHabit(
             User user,
             BufferedReader reader,
@@ -257,6 +317,14 @@ public class ConsoleService {
 
     }
 
+    /**
+     * Выводит статистику по привычке, название которой было введено.
+     * @param reader
+     * @param habitHistoryService
+     * @param habitService
+     * @param user
+     * @throws IOException
+     */
     public void showStatistic(
             BufferedReader reader,
             HabitHistoryServiceImpl habitHistoryService,
@@ -286,6 +354,13 @@ public class ConsoleService {
 
     }
 
+    /**
+     * Просит ввести новые данные пользовтеля и меняет профиль.
+     * @param reader
+     * @param authenticatedUser
+     * @param userService
+     * @throws IOException
+     */
     public void changeProfile(
             BufferedReader reader,
             User authenticatedUser,
@@ -315,6 +390,12 @@ public class ConsoleService {
         }
     }
 
+    /**
+     * Устанавливает новые значения для ользователя.
+     * @param name
+     * @param email
+     * @param user
+     */
     private void setNewProfile(String name, String email, User user) {
         user.setName(name);
         user.setEmail(email);
@@ -322,6 +403,14 @@ public class ConsoleService {
         System.out.println("------------------------------------------------------------------------");
     }
 
+    /**
+     * Удаляет профиль
+     * @param reader
+     * @param userService
+     * @param authenticatedUser
+     * @return
+     * @throws IOException
+     */
     public boolean deleteProfile(
             BufferedReader reader,
             UserServiceImpl userService,
@@ -339,6 +428,13 @@ public class ConsoleService {
         return false;
     }
 
+    /**
+     * Измееняет пароль пользователя.
+     * @param reader
+     * @param authenticatedUser
+     * @param userService
+     * @throws IOException
+     */
     public void changePassword(
             BufferedReader reader,
             User authenticatedUser,
@@ -358,6 +454,13 @@ public class ConsoleService {
         System.out.println("------------------------------------------------------------------------");
     }
 
+    /**
+     * Удалеение привычки по названию, которое было введено.
+     * @param reader
+     * @param habitService
+     * @param user
+     * @throws IOException
+     */
     public void deleteHabit(
             BufferedReader reader,
             HabitServiceImpl habitService,

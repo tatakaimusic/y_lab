@@ -6,6 +6,7 @@ import org.example.repository.impl.HabitHistoryMemoryRepositoryImpl;
 import org.example.repository.impl.HabitMemoryRepositoryImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -27,6 +28,7 @@ public class HabitHistoryMemoryRepositoryTest {
     }
 
     @Test
+    @DisplayName("Тест отметки привычки")
     void mark() {
         Habit habit = habitMemoryRepository.get(100L, "title").orElse(null);
         habitHistoryMemoryRepository.mark(habit.getId(), LocalDate.now());
@@ -34,6 +36,7 @@ public class HabitHistoryMemoryRepositoryTest {
     }
 
     @Test
+    @DisplayName("Тест создания даты в истории привычки")
     void create() {
         Habit habit = habitMemoryRepository.get(100L, "title").orElse(null);
         habitHistoryMemoryRepository.create(habit.getId(), LocalDate.now().plusDays(1));
@@ -41,6 +44,7 @@ public class HabitHistoryMemoryRepositoryTest {
     }
 
     @Test
+    @DisplayName("Тест удаления истории привычки")
     void delete() {
         Habit habit = habitMemoryRepository.get(100L, "title").orElse(null);
         habitHistoryMemoryRepository.delete(habit.getId());
@@ -48,12 +52,14 @@ public class HabitHistoryMemoryRepositoryTest {
     }
 
     @Test
+    @DisplayName("Тест получения истории привычки")
     void getHabitHistory() {
         Habit habit = habitMemoryRepository.get(100L, "title").orElse(null);
         Assertions.assertEquals(3, habitHistoryMemoryRepository.getHabitHistory(habit.getId()).size());
     }
 
     @Test
+    @DisplayName("Тест получения статуса выполненности привычки")
     void getLocalDateMark() {
         Habit habit = habitMemoryRepository.get(100L, "title").orElse(null);
         Assertions.assertFalse(habitHistoryMemoryRepository.getLocalDateMark(habit.getId(), LocalDate.now()));
