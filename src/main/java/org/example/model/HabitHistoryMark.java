@@ -2,6 +2,9 @@ package org.example.model;
 
 import java.time.LocalDate;
 
+/**
+ * Модель истории привычки.
+ */
 public class HabitHistoryMark {
 
     private Long id;

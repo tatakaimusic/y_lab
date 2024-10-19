@@ -33,6 +33,9 @@ public class HabitJdbcRepositoryTest {
     private static String prodSchema;
     private static String migrationSchema;
 
+    // Не успел разобраться с тем как делать rollback changesets,
+    // поэтому пришлось сделать такой костыль,
+    // чтобы контейнер заново каждый раз поднимался. Из за этого долгое тестирование.
     @BeforeEach
     void beforeEach() throws LiquibaseException {
         postgres.start();

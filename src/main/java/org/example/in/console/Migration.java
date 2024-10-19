@@ -1,19 +1,18 @@
 package org.example.in.console;
 
-import liquibase.Contexts;
 import liquibase.Liquibase;
 import liquibase.database.Database;
 import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;
-import liquibase.exception.DatabaseException;
 import liquibase.exception.LiquibaseException;
 import liquibase.resource.ClassLoaderResourceAccessor;
 import org.example.sql.SqlHelper;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 
+/**
+ * Класс для работы с миграцией.
+ */
 public class Migration {
 
     private final String url;
@@ -36,6 +35,11 @@ public class Migration {
         this.migrationSchema = migrationSchema;
     }
 
+    /**
+     * Создание схем для продакшена и миграции.
+     * Загрузка changesets.
+     * @throws LiquibaseException
+     */
     public void migrate() throws LiquibaseException {
         SqlHelper.createSchema(
                 url,
