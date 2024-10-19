@@ -1,8 +1,7 @@
 
 Чтобы запустить приложение создайте .env файл в корне проекта с такими properties:  
 
-HOST=15432  
-POSTGRES_URL=jdbc:postgresql://localhost:${HOST}/ylab  
+POSTGRES_URL=jdbc:postgresql://localhost:15432/ylab  
 POSTGRES_USER=postgres  
 POSTGRES_PASSWORD=postgres  
 POSTGRES_DB=ylab  
