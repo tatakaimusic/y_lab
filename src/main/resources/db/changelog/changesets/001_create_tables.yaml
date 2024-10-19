@@ -50,6 +50,7 @@ databaseChangeLog:
                     nullable: false
                     foreignKeyName: fk_user_habit
                     references: users(id)
+                    deleteCascade: true
               - column:
                   name: title
                   type: varchar(50)
@@ -89,6 +90,7 @@ databaseChangeLog:
                     nullable: false
                     foreignKeyName: fk_habit_mark
                     references: habits(id)
+                    deleteCascade: true
               - column:
                   name: date
                   type: timestamp

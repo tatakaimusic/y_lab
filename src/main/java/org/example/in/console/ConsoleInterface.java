@@ -54,7 +54,6 @@ public class ConsoleInterface {
         this.habitService = new HabitServiceImpl(habitRepository, habitHistoryRepository);
         this.habitHistoryService = new HabitHistoryServiceImpl(habitRepository, habitHistoryRepository);
         this.userService = new UserServiceImpl(userRepository);
-
     }
 
     /**
@@ -71,7 +70,7 @@ public class ConsoleInterface {
         while (true) {
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
             ConsoleService consoleService = new ConsoleService();
-            System.out.println("Войти или зарегистрироваться (Вход - 1, Регистраиця - 2)");
+            System.out.println("Войти или зарегистрироваться (Вход - 1, Регистрация - 2)");
             String temp = reader.readLine();
             User authenticatedUser;
 

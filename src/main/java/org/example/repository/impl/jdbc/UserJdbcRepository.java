@@ -74,4 +74,13 @@ public class UserJdbcRepository implements UserRepository {
         }));
     }
 
+    @Override
+    public void clear() throws SQLException {
+        sqlHelper.execute("" +
+                "DELETE FROM users", ps -> {
+            ps.executeUpdate();
+            return null;
+        });
+    }
+
 }

@@ -38,4 +38,10 @@ public interface UserRepository {
      */
     Optional<User> get(String email) throws SQLException;
 
+    /**
+     * Удаляет всех пользователей.
+     * @throws SQLException
+     */
+    void clear() throws SQLException;
+
 }
