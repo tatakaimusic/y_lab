@@ -34,6 +34,12 @@ public class ConsoleInterface {
     private final String dbPassword;
     private final String prodSchema;
     private final String migrationSchema;
+    private final HabitRepository habitRepository;
+    private final HabitHistoryRepository habitHistoryRepository;
+    private final UserRepository userRepository;
+    private final HabitService habitService;
+    private final HabitHistoryService habitHistoryService;
+    private final UserService userService;
 
     public ConsoleInterface() {
         DatabaseConfig databaseConfig = DatabaseConfig.getInstance();
@@ -42,6 +48,13 @@ public class ConsoleInterface {
         this.dbPassword = databaseConfig.getPassword();
         this.prodSchema = databaseConfig.getProductionSchema();
         this.migrationSchema = databaseConfig.getMigrationSchema();
+        this.habitRepository = new HabitJdbcRepository(getConnectionFactory());
+        this.habitHistoryRepository = new HabitsHistoryJdbcRepository(getConnectionFactory());
+        this.userRepository = new UserJdbcRepository(getConnectionFactory());
+        this.habitService = new HabitServiceImpl(habitRepository, habitHistoryRepository);
+        this.habitHistoryService = new HabitHistoryServiceImpl(habitRepository, habitHistoryRepository);
+        this.userService = new UserServiceImpl(userRepository);
+
     }
 
     /**
@@ -50,22 +63,7 @@ public class ConsoleInterface {
      * @throws IOException
      */
     public void run() throws IOException, SQLException, LiquibaseException {
-        Migration migration = new Migration(dbUrl, dbUsername, dbPassword, prodSchema, migrationSchema);
-        migration.migrate();
-
-        ConnectionFactory connectionFactory = () -> DriverManager.getConnection
-                (
-                        dbUrl + "?currentSchema=" + prodSchema,
-                        dbUsername,
-                        dbPassword
-                );
-
-        HabitRepository habitRepository = new HabitJdbcRepository(connectionFactory);
-        HabitHistoryRepository habitHistoryRepository = new HabitsHistoryJdbcRepository(connectionFactory);
-        UserRepository userRepository = new UserJdbcRepository(connectionFactory);
-        HabitService habitService = new HabitServiceImpl(habitRepository, habitHistoryRepository);
-        HabitHistoryService habitHistoryService = new HabitHistoryServiceImpl(habitRepository, habitHistoryRepository);
-        UserService userService = new UserServiceImpl(userRepository);
+        migrate();
 
         ExecutorService.execute(habitService, habitHistoryService);
 
@@ -118,4 +116,19 @@ public class ConsoleInterface {
             }
         }
     }
+
+    private ConnectionFactory getConnectionFactory() {
+        return () -> DriverManager.getConnection
+                (
+                        dbUrl + "?currentSchema=" + prodSchema,
+                        dbUsername,
+                        dbPassword
+                );
+    }
+
+    private void migrate() throws LiquibaseException {
+        Migration migration = new Migration(dbUrl, dbUsername, dbPassword, prodSchema, migrationSchema);
+        migration.migrate();
+    }
+
 }

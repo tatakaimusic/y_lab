@@ -1,8 +1,6 @@
 package org.example.service;
 
 import org.example.model.Habit;
-import org.example.service.impl.HabitHistoryServiceImpl;
-import org.example.service.impl.HabitServiceImpl;
 
 import java.sql.SQLException;
 import java.time.LocalTime;
