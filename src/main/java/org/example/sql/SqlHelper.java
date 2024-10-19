@@ -1,7 +1,5 @@
 package org.example.sql;
 
-import org.postgresql.core.ConnectionFactory;
-
 import java.sql.*;
 
 public class SqlHelper {
@@ -20,6 +18,15 @@ public class SqlHelper {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public <T> T execute(String sql, ExecuteSql<T> executeSql) throws SQLException {
+        try (Connection conn = connectionFactory.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            return executeSql.execute(ps);
+        } catch (SQLException e) {
+            throw e;
         }
     }
 

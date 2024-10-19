@@ -1,70 +1,71 @@
 package org.example.service.impl;
 
 import org.example.model.Period;
-import org.example.repository.impl.HabitHistoryMemoryRepositoryImpl;
-import org.example.repository.impl.HabitMemoryRepositoryImpl;
+import org.example.repository.HabitHistoryRepository;
+import org.example.repository.HabitRepository;
 import org.example.service.HabitHistoryService;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 
 public class HabitHistoryServiceImpl implements HabitHistoryService {
 
-    private final HabitHistoryMemoryRepositoryImpl habitHistoryMemoryRepository;
-    private final HabitMemoryRepositoryImpl habitMemoryRepository;
+    private final HabitRepository habitRepository;
+    private final HabitHistoryRepository habitHistoryRepository;
 
-    public HabitHistoryServiceImpl(
-            HabitHistoryMemoryRepositoryImpl habitHistoryMemoryRepository,
-            HabitMemoryRepositoryImpl habitMemoryRepository
-    ) {
-        this.habitHistoryMemoryRepository = habitHistoryMemoryRepository;
-        this.habitMemoryRepository = habitMemoryRepository;
+    public HabitHistoryServiceImpl(HabitRepository habitRepository, HabitHistoryRepository habitHistoryRepository) {
+        this.habitRepository = habitRepository;
+        this.habitHistoryRepository = habitHistoryRepository;
     }
 
     @Override
-    public void mark(Long habitId, Long userId) {
-        habitHistoryMemoryRepository.mark(habitId, LocalDate.now());
+    public void mark(Long habitId, Long userId) throws SQLException {
+        habitHistoryRepository.mark(habitId, LocalDate.now());
     }
 
     @Override
-    public void mark(Long habitId, Long userId, LocalDate date) {
-        habitHistoryMemoryRepository.mark(habitId, date);
+    public void mark(Long habitId, Long userId, LocalDate date) throws SQLException {
+        habitHistoryRepository.mark(habitId, date);
     }
 
     @Override
-    public void create(Long habitId) {
-        habitHistoryMemoryRepository.create(habitId, LocalDate.now());
+    public void create(Long habitId) throws SQLException {
+        habitHistoryRepository.create(habitId, LocalDate.now());
     }
 
     @Override
-    public void create(Long habitId, LocalDate date) {
-        habitHistoryMemoryRepository.create(habitId, date);
+    public void create(Long habitId, LocalDate date) throws SQLException {
+        habitHistoryRepository.create(habitId, date);
     }
 
     @Override
-    public void delete(Long habitId) {
-        habitHistoryMemoryRepository.delete(habitId);
+    public void delete(Long habitId) throws SQLException {
+        habitHistoryRepository.delete(habitId);
     }
 
     @Override
-    public Map<LocalDate, Boolean> getHabitHistory(Long habitId) {
-        return habitHistoryMemoryRepository.getHabitHistory(habitId);
+    public Map<LocalDate, Boolean> getHabitHistory(Long habitId) throws SQLException {
+        return habitHistoryRepository.getHabitHistory(habitId);
     }
 
     @Override
-    public Boolean getLocalDateMark(Long habitId, LocalDate date) {
-        return habitHistoryMemoryRepository.getLocalDateMark(habitId, date);
+    public Boolean getLocalDateMark(Long habitId, LocalDate date) throws SQLException {
+        return habitHistoryRepository.getLocalDateMark(habitId, date);
     }
 
     @Override
-    public int getCurrentStreak(Long habitId) {
-        Map<LocalDate, Boolean> history = habitHistoryMemoryRepository.getHabitHistory(habitId);
+    public int getCurrentStreak(Long habitId) throws SQLException {
+        List<Boolean> history = new ArrayList<>(habitHistoryRepository.getHabitHistory(habitId).values());
+        Collections.reverse(history);
         int result = 0;
-        for (int i = 0; i < history.size(); i++) {
-            Boolean mark = history.get(LocalDate.now().minusDays(i));
-            if (mark == null || !mark) {
+        for (Boolean mark : history) {
+            if (!mark) {
                 break;
             } else {
                 result++;
@@ -74,15 +75,11 @@ public class HabitHistoryServiceImpl implements HabitHistoryService {
     }
 
     @Override
-    public int getMaxStreak(Long habitId) {
-        Map<LocalDate, Boolean> history = habitHistoryMemoryRepository.getHabitHistory(habitId);
+    public int getMaxStreak(Long habitId) throws SQLException {
+        List<Boolean> history = new ArrayList<>(habitHistoryRepository.getHabitHistory(habitId).values());
         int result = 0;
         int temp = 0;
-        for (int i = 0; i < history.size(); i++) {
-            Boolean mark = history.get(LocalDate.now().minusDays(i));
-            if (mark == null) {
-                break;
-            }
+        for (Boolean mark : history) {
             if (mark) {
                 temp++;
             } else {
@@ -94,7 +91,7 @@ public class HabitHistoryServiceImpl implements HabitHistoryService {
     }
 
     @Override
-    public Float getPercentOfHabitForPeriod(Long habitId, Period period) {
+    public Float getPercentOfHabitForPeriod(Long habitId, Period period) throws SQLException {
         Float result = 0.0f;
         switch (period) {
             case DAY -> {
@@ -110,7 +107,7 @@ public class HabitHistoryServiceImpl implements HabitHistoryService {
         return result;
     }
 
-    private Float getStatisticByDay(Long habitId) {
+    private Float getStatisticByDay(Long habitId) throws SQLException {
         Boolean result = getLocalDateMark(habitId, LocalDate.now().minusDays(1));
         if (result == null || !result) {
             return 0.0f;
@@ -119,7 +116,7 @@ public class HabitHistoryServiceImpl implements HabitHistoryService {
         }
     }
 
-    private Float getStatisticByWeek(Long habitId) {
+    private Float getStatisticByWeek(Long habitId) throws SQLException {
         int completedHabitsCounter = 0;
         int countOfDates = 0;
         Map<LocalDate, Boolean> dates = getHabitHistory(habitId);
@@ -137,7 +134,7 @@ public class HabitHistoryServiceImpl implements HabitHistoryService {
         return getPercent(completedHabitsCounter, countOfDates);
     }
 
-    private Float getStatisticByMonth(Long habitId) {
+    private Float getStatisticByMonth(Long habitId) throws SQLException {
         Month month = LocalDate.now().getMonth();
         int year = LocalDate.now().getYear();
         int completedHabitsCounter = 0;

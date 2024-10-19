@@ -23,6 +23,14 @@ public class Habit {
         this.period = period;
     }
 
+    public Habit(Long id, String title, String description, HabitPeriod period, LocalDate createDate) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.period = period;
+        this.createDate = createDate;
+    }
+
     public Habit(String title, String description, HabitPeriod period) {
         this.title = title;
         this.description = description;

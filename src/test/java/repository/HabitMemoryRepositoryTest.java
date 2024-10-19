@@ -2,7 +2,7 @@ package repository;
 
 import org.example.model.Habit;
 import org.example.model.HabitPeriod;
-import org.example.repository.impl.HabitMemoryRepositoryImpl;
+import org.example.repository.impl.memory.HabitMemoryRepositoryImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

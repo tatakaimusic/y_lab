@@ -1,7 +1,7 @@
 package repository;
 
 import org.example.model.User;
-import org.example.repository.impl.UserMemoryRepositoryImpl;
+import org.example.repository.impl.memory.UserMemoryRepositoryImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

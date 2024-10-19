@@ -1,6 +1,9 @@
 package org.example.in.console;
 
 import org.example.model.*;
+import org.example.service.HabitHistoryService;
+import org.example.service.HabitService;
+import org.example.service.UserService;
 import org.example.service.impl.HabitHistoryServiceImpl;
 import org.example.service.impl.HabitServiceImpl;
 import org.example.service.impl.UserServiceImpl;
@@ -8,6 +11,7 @@ import org.example.util.Constant;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -26,43 +30,6 @@ public class ConsoleService {
     }
 
     /**
-     * Напполняет хранилища привычек, истории привычек и пользователей данными.
-     * @param habitService
-     * @param historyService
-     * @param userService
-     * @throws IOException
-     */
-    public void populate(
-            HabitServiceImpl habitService,
-            HabitHistoryServiceImpl historyService,
-            UserServiceImpl userService
-    ) throws IOException {
-        User user = new User("user", "user@mail.ru", "password");
-        user = userService.create(user);
-
-        Habit habit = new Habit("title", "description", HabitPeriod.DAILY);
-        habit = habitService.create(user.getId(), habit, LocalDate.now().minusDays(10));
-
-        for (int i = 0; i < 11; i++) {
-            historyService.create(habit.getId(), LocalDate.now().minusDays(i));
-        }
-
-        historyService.mark(habit.getId(), user.getId(), LocalDate.now().minusDays(10));
-        historyService.mark(habit.getId(), user.getId(), LocalDate.now().minusDays(9));
-        historyService.mark(habit.getId(), user.getId(), LocalDate.now().minusDays(8));
-        historyService.mark(habit.getId(), user.getId(), LocalDate.now().minusDays(7));
-        historyService.mark(habit.getId(), user.getId(), LocalDate.now().minusDays(6));
-
-        historyService.mark(habit.getId(), user.getId(), LocalDate.now().minusDays(2));
-        historyService.mark(habit.getId(), user.getId(), LocalDate.now().minusDays(1));
-        historyService.mark(habit.getId(), user.getId(), LocalDate.now());
-
-        Habit habit2 = new Habit("title2", "description", HabitPeriod.DAILY);
-        habit = habitService.create(user.getId(), habit2, LocalDate.now().minusDays(9));
-
-    }
-
-    /**
      * Регистрация пользователя. Пользователь должен ввести имя, почту и пароль.
      * Вернет -1 и выведет на экран предупреждение, если пользователей с такой почтой уже существует.
      * @param reader
@@ -70,7 +37,7 @@ public class ConsoleService {
      * @return
      * @throws IOException
      */
-    public int registration(BufferedReader reader, UserServiceImpl userService) throws IOException {
+    public int registration(BufferedReader reader, UserService userService) throws IOException, SQLException {
         System.out.println("------------------------------------------------------------------------");
         System.out.println("Введите имя пользователя: ");
         String username = reader.readLine();
@@ -98,7 +65,7 @@ public class ConsoleService {
      * @return
      * @throws IOException
      */
-    public User authentication(BufferedReader reader, UserServiceImpl userService) throws IOException {
+    public User authentication(BufferedReader reader, UserService userService) throws IOException, SQLException {
         System.out.println("------------------------------------------------------------------------");
         System.out.println("Введите почту: ");
         String mail = reader.readLine();
@@ -129,7 +96,7 @@ public class ConsoleService {
      * @param userId
      * @throws IOException
      */
-    public void showHabitsByUserId(BufferedReader reader, HabitServiceImpl habitService, Long userId) throws IOException {
+    public void showHabitsByUserId(BufferedReader reader, HabitService habitService, Long userId) throws IOException, SQLException {
         System.out.println("------------------------------------------------------------------------");
         List<Habit> habits;
         System.out.println(Constant.HABIT_LIST_NAVIGATION);
@@ -177,7 +144,7 @@ public class ConsoleService {
      * @param userId
      * @throws IOException
      */
-    public void createHabit(BufferedReader reader, HabitServiceImpl habitService, Long userId) throws IOException {
+    public void createHabit(BufferedReader reader, HabitService habitService, Long userId) throws IOException, SQLException {
         System.out.println("------------------------------------------------------------------------");
         System.out.println("Введите название привычки: ");
         String title = reader.readLine();
@@ -207,10 +174,10 @@ public class ConsoleService {
      */
     public void showHistoryOfHabit(
             BufferedReader reader,
-            HabitHistoryServiceImpl habitHistoryService,
-            HabitServiceImpl habitService,
+            HabitHistoryService habitHistoryService,
+            HabitService habitService,
             Long userId
-    ) throws IOException {
+    ) throws IOException, SQLException {
         System.out.println("------------------------------------------------------------------------");
         showHabits(habitService.getAllHabitsByUserId(userId));
         System.out.println("Введите название привычки: ");
@@ -254,7 +221,7 @@ public class ConsoleService {
      * @param habitService
      * @throws IOException
      */
-    public void changeHabit(BufferedReader reader, User authenticatedUser, HabitServiceImpl habitService) throws IOException {
+    public void changeHabit(BufferedReader reader, User authenticatedUser, HabitService habitService) throws IOException, SQLException {
         System.out.println("------------------------------------------------------------------------");
 
         showHabits(habitService.getAllHabitsByUserId(authenticatedUser.getId()));
@@ -298,9 +265,9 @@ public class ConsoleService {
     public void markHabit(
             User user,
             BufferedReader reader,
-            HabitServiceImpl habitService,
-            HabitHistoryServiceImpl habitHistoryService
-    ) throws IOException {
+            HabitService habitService,
+            HabitHistoryService habitHistoryService
+    ) throws IOException, SQLException {
         System.out.println("------------------------------------------------------------------------");
         showHabits(habitService.getAllHabitsByUserId(user.getId()));
         System.out.println("Введите название привычки, которую хотите отметить: ");
@@ -327,10 +294,10 @@ public class ConsoleService {
      */
     public void showStatistic(
             BufferedReader reader,
-            HabitHistoryServiceImpl habitHistoryService,
-            HabitServiceImpl habitService,
+            HabitHistoryService habitHistoryService,
+            HabitService habitService,
             User user
-    ) throws IOException {
+    ) throws IOException, SQLException {
         System.out.println("------------------------------------------------------------------------");
         showHabits(habitService.getAllHabitsByUserId(user.getId()));
         System.out.println("Введите название привычки, у которой вы хотите посмотреть статистику: ");
@@ -364,8 +331,8 @@ public class ConsoleService {
     public void changeProfile(
             BufferedReader reader,
             User authenticatedUser,
-            UserServiceImpl userService
-    ) throws IOException {
+            UserService userService
+    ) throws IOException, SQLException {
         System.out.println("------------------------------------------------------------------------");
         showProfile(authenticatedUser);
         System.out.println("Ввеедите новое имя: ");
@@ -383,10 +350,10 @@ public class ConsoleService {
                 System.out.println("Юзер с такой почтой уже существует!");
                 System.out.println("------------------------------------------------------------------------");
             } else {
-                setNewProfile(name, email, authenticatedUser);
+                setNewProfile(name, email, authenticatedUser, userService);
             }
         } else {
-            setNewProfile(name, email, authenticatedUser);
+            setNewProfile(name, email, authenticatedUser, userService);
         }
     }
 
@@ -396,9 +363,10 @@ public class ConsoleService {
      * @param email
      * @param user
      */
-    private void setNewProfile(String name, String email, User user) {
+    private void setNewProfile(String name, String email, User user, UserService userService) throws SQLException {
         user.setName(name);
         user.setEmail(email);
+        userService.update(user);
         System.out.println("Успешно!");
         System.out.println("------------------------------------------------------------------------");
     }
@@ -413,9 +381,9 @@ public class ConsoleService {
      */
     public boolean deleteProfile(
             BufferedReader reader,
-            UserServiceImpl userService,
+            UserService userService,
             User authenticatedUser
-    ) throws IOException {
+    ) throws IOException, SQLException {
         System.out.println("------------------------------------------------------------------------");
         System.out.println("Вы уверены? Введите Да или Нет:");
         String action = reader.readLine();
@@ -438,8 +406,8 @@ public class ConsoleService {
     public void changePassword(
             BufferedReader reader,
             User authenticatedUser,
-            UserServiceImpl userService
-    ) throws IOException {
+            UserService userService
+    ) throws IOException, SQLException {
         System.out.println("------------------------------------------------------------------------");
         System.out.println("Введите старый пароль: ");
         String oldPassword = reader.readLine();
@@ -449,6 +417,7 @@ public class ConsoleService {
             System.out.println("Введите новый пароль: ");
             String newPassword = reader.readLine();
             authenticatedUser.setPassword(newPassword);
+            userService.update(authenticatedUser);
             System.out.println("Успешно!");
         }
         System.out.println("------------------------------------------------------------------------");
@@ -463,9 +432,9 @@ public class ConsoleService {
      */
     public void deleteHabit(
             BufferedReader reader,
-            HabitServiceImpl habitService,
+            HabitService habitService,
             User user
-    ) throws IOException {
+    ) throws IOException, SQLException {
         System.out.println("------------------------------------------------------------------------");
         showHabits(habitService.getAllHabitsByUserId(user.getId()));
         System.out.println("Введите название привычки, которую вы хотите удалить: ");
