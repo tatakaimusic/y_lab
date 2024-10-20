@@ -2,12 +2,13 @@ package org.example.repository;
 
 import org.example.model.User;
 
+import java.sql.SQLException;
 import java.util.Optional;
 
 /**
  * Хранилище пользователей.
  */
-public interface UserMemoryRepository {
+public interface UserRepository {
 
     /**
      * Создает пользователя.
@@ -15,27 +16,32 @@ public interface UserMemoryRepository {
      * @param user
      * @return
      */
-    User create(User user);
+    Optional<User> create(User user) throws SQLException;
 
     /**
-     * Обновляет пользователя по старой почте.
+     * Обновляет пользователя.
      * @param user
-     * @param oldEmail
      * @return
      */
-    User update(User user, String oldEmail);
+    User update(User user) throws SQLException;
 
     /**
      * Удаляет пользователя по его почте.
      * @param user
      */
-    void delete(User user);
+    void delete(User user) throws SQLException;
 
     /**
      * Возвращает Optional пользователя по его почте.
      * @param email
      * @return
      */
-    Optional<User> get(String email);
+    Optional<User> get(String email) throws SQLException;
+
+    /**
+     * Удаляет всех пользователей.
+     * @throws SQLException
+     */
+    void clear() throws SQLException;
 
 }

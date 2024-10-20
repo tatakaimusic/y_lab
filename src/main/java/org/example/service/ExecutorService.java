@@ -1,9 +1,8 @@
 package org.example.service;
 
 import org.example.model.Habit;
-import org.example.service.impl.HabitHistoryServiceImpl;
-import org.example.service.impl.HabitServiceImpl;
 
+import java.sql.SQLException;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.concurrent.ScheduledExecutorService;
@@ -27,8 +26,8 @@ public class ExecutorService {
      * @param habitHistoryService
      */
     public static void execute(
-            HabitServiceImpl habitService,
-            HabitHistoryServiceImpl habitHistoryService
+            HabitService habitService,
+            HabitHistoryService habitHistoryService
     ) {
         LocalTime currentTime = LocalTime.now();
         LocalTime midnight = LocalTime.MIDNIGHT;
@@ -36,8 +35,12 @@ public class ExecutorService {
         long delay = dayInMillis - midnight.until(currentTime, ChronoUnit.MILLIS);
 
         executorService.scheduleAtFixedRate(() -> {
-            for (Habit habit : habitService.getAllHabits()) {
-                habitHistoryService.create(habit.getId());
+            try {
+                for (Habit habit : habitService.getAllHabits()) {
+                    habitHistoryService.create(habit.getId());
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
         }, delay, dayInMillis, TimeUnit.MILLISECONDS);
     }

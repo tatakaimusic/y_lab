@@ -1,0 +1,95 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2
+      author: ylab
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: name
+                  value: 'test user'
+              - column:
+                  name: email
+                  value: 'user@mail.ru'
+              - column:
+                  name: password
+                  value: 'password'
+        - insert:
+            tableName: habits
+            columns:
+              - column:
+                  name: user_id
+                  value: 100
+              - column:
+                  name: title
+                  value: 'first habit'
+              - column:
+                  name: description
+                  value: 'First habit description'
+              - column:
+                  name: period
+                  value: 'DAILY'
+              - column:
+                  name: create_date
+                  value: '2024-10-14'
+        - insert:
+            tableName: habit_history_marks
+            columns:
+              - column:
+                  name: habit_id
+                  value: 100
+              - column:
+                  name: date
+                  value: '2024-10-14'
+              - column:
+                  name: is_done
+                  value: true
+        - insert:
+            tableName: habit_history_marks
+            columns:
+              - column:
+                  name: habit_id
+                  value: 100
+              - column:
+                  name: date
+                  value: '2024-10-15'
+              - column:
+                  name: is_done
+                  value: true
+        - insert:
+            tableName: habit_history_marks
+            columns:
+              - column:
+                  name: habit_id
+                  value: 100
+              - column:
+                  name: date
+                  value: '2024-10-16'
+              - column:
+                  name: is_done
+                  value: true
+        - insert:
+            tableName: habit_history_marks
+            columns:
+              - column:
+                  name: habit_id
+                  value: 100
+              - column:
+                  name: date
+                  value: '2024-10-17'
+              - column:
+                  name: is_done
+                  value: false
+        - insert:
+            tableName: habit_history_marks
+            columns:
+              - column:
+                  name: habit_id
+                  value: 100
+              - column:
+                  name: date
+                  value: '2024-10-18'
+              - column:
+                  name: is_done
+                  value: true
