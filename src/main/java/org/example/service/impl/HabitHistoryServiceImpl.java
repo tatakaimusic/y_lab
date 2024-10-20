@@ -9,10 +9,8 @@ import org.example.service.HabitHistoryService;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 
 public class HabitHistoryServiceImpl implements HabitHistoryService {

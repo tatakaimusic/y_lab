@@ -6,7 +6,6 @@ import org.example.model.Period;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Интерфейс сервиса истории привычек.

@@ -15,7 +15,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 import static org.example.HabitHistoryTestData.*;
 import static org.example.HabitTestData.HABIT_EXISTED_ID;

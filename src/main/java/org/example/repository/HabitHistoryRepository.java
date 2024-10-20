@@ -5,7 +5,6 @@ import org.example.model.HabitHistoryMark;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Интерфейс для хранения и обработки истории выолнения привычек.
