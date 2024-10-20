@@ -3,6 +3,7 @@ package org.example.repository;
 import liquibase.exception.LiquibaseException;
 import org.example.config.DatabaseConfig;
 import org.example.in.console.Migration;
+import org.example.model.HabitHistoryMark;
 import org.example.repository.impl.jdbc.HabitsHistoryJdbcRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,6 +14,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 
 import static org.example.HabitHistoryTestData.*;
@@ -78,7 +80,7 @@ public class HabitHistoryJdbcRepositoryTest {
     @DisplayName("Deleting history test")
     void delete() throws SQLException {
         habitHistoryRepository.delete(HABIT_EXISTED_ID);
-        Map<LocalDate, Boolean> history = habitHistoryRepository.getHabitHistory(HABIT_EXISTED_ID);
+        List<HabitHistoryMark> history = habitHistoryRepository.getHabitHistory(HABIT_EXISTED_ID);
         assertThat(history.isEmpty())
                 .isTrue();
     }
@@ -86,7 +88,7 @@ public class HabitHistoryJdbcRepositoryTest {
     @Test
     @DisplayName("Getting habit history test")
     void getHabitHistory() throws SQLException {
-        Map<LocalDate, Boolean> history = habitHistoryRepository.getHabitHistory(HABIT_EXISTED_ID);
+        List<HabitHistoryMark> history = habitHistoryRepository.getHabitHistory(HABIT_EXISTED_ID);
         assertThat(history.size())
                 .isEqualTo(EXISTED_HISTORY_SIZE);
     }

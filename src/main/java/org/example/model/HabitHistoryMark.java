@@ -17,6 +17,11 @@ public class HabitHistoryMark {
         this.isDone = isDone;
     }
 
+    public HabitHistoryMark(LocalDate date, Boolean isDone) {
+        this.date = date;
+        this.isDone = isDone;
+    }
+
     public Long getId() {
         return id;
     }

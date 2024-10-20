@@ -1,5 +1,6 @@
 package org.example.service.impl;
 
+import org.example.model.HabitHistoryMark;
 import org.example.model.Period;
 import org.example.repository.HabitHistoryRepository;
 import org.example.repository.HabitRepository;
@@ -50,7 +51,7 @@ public class HabitHistoryServiceImpl implements HabitHistoryService {
     }
 
     @Override
-    public Map<LocalDate, Boolean> getHabitHistory(Long habitId) throws SQLException {
+    public List<HabitHistoryMark> getHabitHistory(Long habitId) throws SQLException {
         return habitHistoryRepository.getHabitHistory(habitId);
     }
 
@@ -61,11 +62,11 @@ public class HabitHistoryServiceImpl implements HabitHistoryService {
 
     @Override
     public int getCurrentStreak(Long habitId) throws SQLException {
-        List<Boolean> history = new ArrayList<>(habitHistoryRepository.getHabitHistory(habitId).values());
+        List<HabitHistoryMark> history = habitHistoryRepository.getHabitHistory(habitId);
         Collections.reverse(history);
         int result = 0;
-        for (Boolean mark : history) {
-            if (!mark) {
+        for (HabitHistoryMark mark : history) {
+            if (!mark.getDone()) {
                 break;
             } else {
                 result++;
@@ -76,11 +77,11 @@ public class HabitHistoryServiceImpl implements HabitHistoryService {
 
     @Override
     public int getMaxStreak(Long habitId) throws SQLException {
-        List<Boolean> history = new ArrayList<>(habitHistoryRepository.getHabitHistory(habitId).values());
+        List<HabitHistoryMark> history = habitHistoryRepository.getHabitHistory(habitId);
         int result = 0;
         int temp = 0;
-        for (Boolean mark : history) {
-            if (mark) {
+        for (HabitHistoryMark mark : history) {
+            if (mark.getDone()) {
                 temp++;
             } else {
                 temp = 0;
@@ -118,20 +119,15 @@ public class HabitHistoryServiceImpl implements HabitHistoryService {
 
     private Float getStatisticByWeek(Long habitId) throws SQLException {
         int completedHabitsCounter = 0;
-        int countOfDates = 0;
-        Map<LocalDate, Boolean> dates = getHabitHistory(habitId);
-        for (int i = 1; i < 8; i++) {
-            LocalDate date = LocalDate.now().minusDays(i);
-            if (dates.containsKey(date)) {
-                countOfDates++;
-                if (dates.get(date)) {
-                    completedHabitsCounter++;
-                }
-            } else {
-                break;
+        List<HabitHistoryMark> history = getHabitHistory(habitId);
+        Collections.reverse(history);
+        int countOfDays = Math.min(history.size(), 7);
+        for (int i = 0; i < countOfDays; i++) {
+            if (history.get(i).getDone()) {
+                completedHabitsCounter++;
             }
         }
-        return getPercent(completedHabitsCounter, countOfDates);
+        return getPercent(completedHabitsCounter, countOfDays);
     }
 
     private Float getStatisticByMonth(Long habitId) throws SQLException {
@@ -139,13 +135,16 @@ public class HabitHistoryServiceImpl implements HabitHistoryService {
         int year = LocalDate.now().getYear();
         int completedHabitsCounter = 0;
         int countOfDates = 0;
-        Map<LocalDate, Boolean> dates = getHabitHistory(habitId);
-        for (Map.Entry<LocalDate, Boolean> entry : dates.entrySet()) {
-            if (entry.getKey().getMonth() == month && entry.getKey().getYear() == year) {
+        List<HabitHistoryMark> history = getHabitHistory(habitId);
+        Collections.reverse(history);
+        for (HabitHistoryMark mark : history) {
+            if (mark.getDate().getMonth().equals(month) && mark.getDate().getYear() == year) {
                 countOfDates++;
-                if (entry.getValue()) {
+                if (mark.getDone()) {
                     completedHabitsCounter++;
                 }
+            } else {
+                break;
             }
         }
         return getPercent(completedHabitsCounter, countOfDates);

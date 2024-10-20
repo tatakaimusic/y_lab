@@ -9,9 +9,7 @@ import org.example.util.Constant;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -29,6 +27,7 @@ public class ConsoleService {
     /**
      * Регистрация пользователя. Пользователь должен ввести имя, почту и пароль.
      * Вернет -1 и выведет на экран предупреждение, если пользователей с такой почтой уже существует.
+     *
      * @param reader
      * @param userService
      * @return
@@ -57,6 +56,7 @@ public class ConsoleService {
     /**
      * Ауентефикация пользователя по почте и паролю.
      * Выведет предупреждение, если пароль или почта не совпадают.
+     *
      * @param reader
      * @param userService
      * @return
@@ -88,6 +88,7 @@ public class ConsoleService {
 
     /**
      * Выведет список привычек пользователя по его id.
+     *
      * @param reader
      * @param habitService
      * @param userId
@@ -123,6 +124,7 @@ public class ConsoleService {
 
     /**
      * Вывод привычек в консоль.
+     *
      * @param habits
      */
     private void showHabits(List<Habit> habits) {
@@ -136,6 +138,7 @@ public class ConsoleService {
     /**
      * Создание новой привычки по userId.
      * Выведет предупреждение, если привычка с таким названием уже существует.
+     *
      * @param reader
      * @param habitService
      * @param userId
@@ -163,6 +166,7 @@ public class ConsoleService {
 
     /**
      * Выводит историю привычки.
+     *
      * @param reader
      * @param habitHistoryService
      * @param habitService
@@ -184,9 +188,9 @@ public class ConsoleService {
             habit = habitService.get(userId, title);
             System.out.println("Текущий streak: " + habitHistoryService.getCurrentStreak(habit.getId()));
             System.out.println("Максимальный streak: " + habitHistoryService.getMaxStreak(habit.getId()));
-            for (Map.Entry<LocalDate, Boolean> entry : habitHistoryService.getHabitHistory(habit.getId()).entrySet()) {
-                String result = entry.getValue() ? "Выполнена" : "Невыполнена";
-                System.out.println(entry.getKey() + ": " + result);
+            for (HabitHistoryMark mark : habitHistoryService.getHabitHistory(habit.getId())) {
+                String result = mark.getDone() ? "Выполнена" : "Невыполнена";
+                System.out.println(mark.getDate() + ": " + result);
             }
             System.out.println("------------------------------------------------------------------------");
         } catch (IllegalArgumentException e) {
@@ -198,6 +202,7 @@ public class ConsoleService {
 
     /**
      * Выводит данные ауентефецированногго пользователя.
+     *
      * @param user
      */
     public void showProfile(User user) {
@@ -213,6 +218,7 @@ public class ConsoleService {
     /**
      * Просит пользователя ввести название првиычки, которую нужно изменить. А также новые данные по привычке.
      * Изменяет привычку.
+     *
      * @param reader
      * @param authenticatedUser
      * @param habitService
@@ -253,6 +259,7 @@ public class ConsoleService {
      * Просит ввести название привычки, которую нужно отметить.
      * Отмечает привычку на противоположное значение. Если првиычка выполнена - ее статус меняется на 'невыполнена'.
      * И наооброт.
+     *
      * @param user
      * @param reader
      * @param habitService
@@ -283,6 +290,7 @@ public class ConsoleService {
 
     /**
      * Выводит статистику по привычке, название которой было введено.
+     *
      * @param reader
      * @param habitHistoryService
      * @param habitService
@@ -320,6 +328,7 @@ public class ConsoleService {
 
     /**
      * Просит ввести новые данные пользовтеля и меняет профиль.
+     *
      * @param reader
      * @param authenticatedUser
      * @param userService
@@ -356,6 +365,7 @@ public class ConsoleService {
 
     /**
      * Устанавливает новые значения для ользователя.
+     *
      * @param name
      * @param email
      * @param user
@@ -370,6 +380,7 @@ public class ConsoleService {
 
     /**
      * Удаляет профиль
+     *
      * @param reader
      * @param userService
      * @param authenticatedUser
@@ -395,6 +406,7 @@ public class ConsoleService {
 
     /**
      * Измееняет пароль пользователя.
+     *
      * @param reader
      * @param authenticatedUser
      * @param userService
@@ -422,6 +434,7 @@ public class ConsoleService {
 
     /**
      * Удалеение привычки по названию, которое было введено.
+     *
      * @param reader
      * @param habitService
      * @param user

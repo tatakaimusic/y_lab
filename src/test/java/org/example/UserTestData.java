@@ -17,4 +17,8 @@ public class UserTestData {
 
     public static final String UPDATED_EMAIL = "updated@mail.ru";
 
+    public static User getNewUser() {
+        return new User(USER_NAME, USER_MAIL, USER_PASSWORD);
+    }
+
 }

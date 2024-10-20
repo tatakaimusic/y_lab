@@ -1,9 +1,11 @@
 package org.example.service;
 
+import org.example.model.HabitHistoryMark;
 import org.example.model.Period;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -49,7 +51,7 @@ public interface HabitHistoryService {
      * @param habitId
      * @return
      */
-    Map<LocalDate, Boolean> getHabitHistory(Long habitId) throws SQLException;
+    List<HabitHistoryMark> getHabitHistory(Long habitId) throws SQLException;
 
     /**
      * Достает значение выполненности по habitId и дате.

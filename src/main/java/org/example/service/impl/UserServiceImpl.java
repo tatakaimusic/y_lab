@@ -28,6 +28,9 @@ public class UserServiceImpl implements UserService {
 
     public User update(User user) throws SQLException {
         Objects.requireNonNull(user, "User must not be null");
+        if (userRepository.get(user.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("User with this email already exists");
+        }
         return userRepository.update(user);
     }
 

@@ -87,9 +87,8 @@ public class HabitServiceImpl implements HabitService {
     @Override
     public void update(Long userId, String habitTitle, Habit habit) throws SQLException {
         if (!habitTitle.equals(habit.getTitle())) {
-            Habit hab = habitRepository.get(userId, habit.getTitle()).orElse(null);
-            if (hab != null) {
-                throw new IllegalArgumentException("Habit with this title already exist!");
+            if (habitRepository.get(userId, habit.getTitle()).isPresent()) {
+                throw new IllegalArgumentException("Habit with this title already exists");
             }
         }
         habitRepository.update(userId, habit);

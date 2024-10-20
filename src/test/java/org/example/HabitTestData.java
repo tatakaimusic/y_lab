@@ -29,5 +29,12 @@ public class HabitTestData {
 
     public static final String HABIT_UPDATED_TITLE = "updated title";
 
+    public static Habit getNewHabit() {
+        return new Habit(HABIT_TITLE, HABIT_DESCRIPTION, HabitPeriod.DAILY);
+    }
+
+    public static Habit getExistedHabit() {
+        return new Habit(HABIT_EXISTED_TITLE, HABIT_EXISTED_DESCRIPTION, HabitPeriod.DAILY);
+    }
 
 }

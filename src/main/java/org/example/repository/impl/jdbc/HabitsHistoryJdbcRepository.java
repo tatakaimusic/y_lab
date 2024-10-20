@@ -1,5 +1,6 @@
 package org.example.repository.impl.jdbc;
 
+import org.example.model.HabitHistoryMark;
 import org.example.repository.HabitHistoryRepository;
 import org.example.sql.ConnectionFactory;
 import org.example.sql.SqlHelper;
@@ -8,7 +9,9 @@ import org.example.util.DateHelper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class HabitsHistoryJdbcRepository implements HabitHistoryRepository {
@@ -63,8 +66,8 @@ public class HabitsHistoryJdbcRepository implements HabitHistoryRepository {
     }
 
     @Override
-    public Map<LocalDate, Boolean> getHabitHistory(Long habitId) throws SQLException {
-        Map<LocalDate, Boolean> habitHistory = new LinkedHashMap<>();
+    public List<HabitHistoryMark> getHabitHistory(Long habitId) throws SQLException {
+        List<HabitHistoryMark> habitHistory = new ArrayList<>();
         sqlHelper.execute("" +
                 "SELECT * FROM habit_history_marks " +
                 "WHERE habit_id = ? " +
@@ -72,10 +75,14 @@ public class HabitsHistoryJdbcRepository implements HabitHistoryRepository {
             ps.setLong(1, habitId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                habitHistory.put(
-                        rs.getTimestamp("date").toLocalDateTime().toLocalDate(),
-                        rs.getBoolean("is_done")
+                habitHistory.add(
+                        new HabitHistoryMark(
+                                rs.getLong("id"),
+                                rs.getTimestamp("date").toLocalDateTime().toLocalDate(),
+                                rs.getBoolean("is_done")
+                        )
                 );
+
             }
             return null;
         });
